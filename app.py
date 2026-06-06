@@ -260,12 +260,13 @@ class AppOrganizacao:
                  font=("Arial", 9, "bold"), fg="#14532d"
                  ).pack(side=tk.LEFT, padx=(0, 5))
         for texto, bg, fg in [
-            (" Atrasada ",          "#14532d", "#ffffff"),
-            (" Hoje ",              "#16a34a", "#ffffff"),
-            (" Essa semana ",       "#4ade80", "#064e3b"),
-            (" Semana que vem ",    "#86efac", "#064e3b"),
-            (" Esse mês ",          "#dcfce7", "#064e3b"),
-            (" Depois desse mês ",  "#e2e8f0", "#0f172a"),
+            (" Atrasada ",         "#052e16", "#ffffff"),
+            (" Hoje ",             "#15803d", "#ffffff"),
+            (" Amanhã ",           "#22c55e", "#ffffff"),
+            (" Essa semana ",      "#86efac", "#064e3b"),
+            (" Semana que vem ",   "#bbf7d0", "#064e3b"),
+            (" Esse mês ",         "#f0fdf4", "#064e3b"),
+            (" Depois desse mês ", "#e2e8f0", "#0f172a"),
         ]:
             tk.Label(frame_legenda, text=texto, bg=bg, fg=fg,
                      font=("Arial", 8)
@@ -295,11 +296,12 @@ class AppOrganizacao:
         self.tabela.column("Palavras-chave", width=150)
 
         for tag, bg, fg in [
-            ("atrasada",         "#14532d", "#ffffff"),
-            ("hoje",             "#16a34a", "#ffffff"),
-            ("essa_semana",      "#4ade80", "#064e3b"),
-            ("semana_que_vem",   "#86efac", "#064e3b"),
-            ("esse_mes",         "#dcfce7", "#064e3b"),
+            ("atrasada",         "#052e16", "#ffffff"),
+            ("hoje",             "#15803d", "#ffffff"),
+            ("amanha",           "#22c55e", "#ffffff"),
+            ("essa_semana",      "#86efac", "#064e3b"),
+            ("semana_que_vem",   "#bbf7d0", "#064e3b"),
+            ("esse_mes",         "#f0fdf4", "#064e3b"),
             ("depois_desse_mes", "#e2e8f0", "#0f172a"),
             ("sem_data",         "#ffffff", "#000000"),
         ]:
@@ -351,11 +353,13 @@ class AppOrganizacao:
         self.root.after(1000, self.atualizar_relogio)
 
     # ── Tabela principal ─────────────────────
+    # ── Tabela principal ─────────────────────
     def atualizar_tabela_principal(self) -> None:
         for item in self.tabela.get_children():
             self.tabela.delete(item)
 
         hoje   = datetime.today().date()
+        amanha = hoje + timedelta(days=1)
         sabado = hoje + timedelta(days=(5 - hoje.weekday()) % 7)
         prox_sabado = sabado + timedelta(days=7)
 
@@ -368,7 +372,7 @@ class AppOrganizacao:
             if busca and busca not in titulo and busca not in tags:
                 continue
 
-            prazo    = converter_data(ativ.get("deadline", ""))
+            prazo     = converter_data(ativ.get("deadline", ""))
             tag_linha = "sem_data"
 
             if prazo != datetime.max:
@@ -377,6 +381,8 @@ class AppOrganizacao:
                     tag_linha = "atrasada"
                 elif d == hoje:
                     tag_linha = "hoje"
+                elif d == amanha:
+                    tag_linha = "amanha"
                 elif d <= sabado:
                     tag_linha = "essa_semana"
                 elif d <= prox_sabado:
