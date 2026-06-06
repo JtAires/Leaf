@@ -1,0 +1,8 @@
+# Ignorar pastas de compilação do PyInstaller
+build/
+dist/
+*.spec
+__pycache__/
+
+# Ignorar banco de dados local (se você gerar testes na pasta do código)
+*.json
